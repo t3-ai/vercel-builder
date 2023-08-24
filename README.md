@@ -1,1 +1,1 @@
-# vercel-builder
+# @t3-ai/vercel-builder
