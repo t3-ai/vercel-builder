@@ -21,6 +21,7 @@ cli
       edge: string;
       serverless: string;
     }) => {
+    console.log(process.argv)
       await bundle({
         outputDir: options.outputDir,
         clearOutputDir: options.clearOutputDir,
@@ -34,6 +35,8 @@ cli
 cli.help();
 
 cli.parse();
+
+console.log("Hello world!");
 
 async function bundle(opts: {
   outputDir: string;
