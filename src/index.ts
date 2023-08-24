@@ -3,6 +3,8 @@ import fs from "fs-extra";
 import path from "path";
 import fg from "fast-glob";
 import { cac } from "cac";
+// @ts-ignore
+import ncc from "@vercel/ncc";
 
 const cli = cac("vercel");
 
@@ -21,7 +23,7 @@ cli
       edge: string;
       serverless: string;
     }) => {
-    console.log(process.argv)
+      console.log(process.argv);
       await bundle({
         outputDir: options.outputDir,
         clearOutputDir: options.clearOutputDir,
@@ -46,12 +48,7 @@ async function bundle(opts: {
   serverlessEntry: string;
 }) {
   const { outputDir = ".vercel/output" } = opts;
-  const cwd = path.join(__dirname, "..");
-  child.execSync("pnpm next build", { stdio: "inherit", cwd });
-  child.execSync("pnpm nest build -p tsconfig.server.json", {
-    stdio: "inherit",
-    cwd,
-  });
+  const cwd = process.cwd();
   const vercelOutputDir =
     process.env.VERCEL === "1" && String(cwd).startsWith("/vercel")
       ? "/vercel/output"
@@ -61,11 +58,21 @@ async function bundle(opts: {
     "/functions/index.func/.vc-config.json"
   );
   fs.ensureDirSync(path.dirname(funcPath));
-
-  child.execSync(
-    "pnpm ncc build ./dist/index.js -o " + path.dirname(funcPath),
-    { stdio: "inherit", cwd }
-  );
+//   child.execSync(
+//     "pnpm ncc build ./dist/index.js -o " + path.dirname(funcPath),
+//     { stdio: "inherit", cwd }
+//   );
+  const { code, map, assets } = await ncc(path.join(cwd, "server/index.ts"), {
+    cache: false,
+    externals: [],
+    sourceMap: true,
+    watch: false, // default
+  });
+  if (Object.keys(assets).length) {
+    console.error("New unexpected assets are being emitted for", funcPath);
+  }
+  fs.writeFileSync(path.join(path.dirname(funcPath), "index.js"), code);
+  fs.ensureDirSync(path.dirname(funcPath));
   await fs.writeFile(
     funcPath,
     JSON.stringify({
