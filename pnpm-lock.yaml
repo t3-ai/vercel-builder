@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@vercel/build-utils':
+    specifier: ^7.0.0
+    version: 7.0.0
   '@vercel/ncc':
     specifier: ^0.36.0
     version: 0.36.0
@@ -296,6 +299,10 @@ packages:
   /@types/node@16.11.19:
     resolution: {integrity: sha512-BPAcfDPoHlRQNKktbsbnpACGdypPFBuX4xQlsWDE7B8XXcfII+SpOLay3/qZmCLb39kV5S1RTYwXdkx2lwLYng==}
     dev: true
+
+  /@vercel/build-utils@7.0.0:
+    resolution: {integrity: sha512-R5cIyKwRsmrQ1BFIRezHqEJ7XR/dY/5dgwvZ8owSaaSbb7hTsYh86NUholRn+fGuSnRZbSLXmm4ILFto0rZ37A==}
+    dev: false
 
   /@vercel/ncc@0.36.0:
     resolution: {integrity: sha512-/ZTUJ/ZkRt694k7KJNimgmHjtQcRuVwsST2Z6XfYveQIuBbHR+EqkTc1jfgPkQmMyk/vtpxo3nVxe8CNuau86A==}

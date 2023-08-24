@@ -1,6 +1,6 @@
 {
   "name": "@t3-ai/vercel-builder",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "vercel builder",
   "keywords": [
     "t3-ai"
@@ -31,14 +31,15 @@
     "prepack": "pnpm build"
   },
   "dependencies": {
+    "@vercel/build-utils": "^7.0.0",
     "@vercel/ncc": "^0.36.0",
     "cac": "^6.7.14",
     "fast-glob": "^3.3.1",
     "fs-extra": "^11.1.1"
   },
   "devDependencies": {
-    "@types/node": "^16.11.19",
     "@types/fs-extra": "^11.0.1",
+    "@types/node": "^16.11.19",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   },
