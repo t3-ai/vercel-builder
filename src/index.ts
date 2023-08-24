@@ -6,38 +6,6 @@ import { cac } from "cac";
 // @ts-ignore
 import ncc from "@vercel/ncc";
 
-const cli = cac("vercel");
-
-cli
-  .command("", "Bundle a HatTip app for Vercel")
-  .option("-o, --outputDir <path>", "Root directory of the app")
-  .option("-c, --clearOutputDir", "Clear the output directory before bundling")
-  .option("-s, --staticDir <path>", "Static directory to copy to output")
-  .option("-e, --edge <path>", "Edge function entry file")
-  .option("-S, --serverless <path>", "Serverless function entry file")
-  .action(
-    async (options: {
-      outputDir: string;
-      clearOutputDir: boolean;
-      staticDir: string;
-      edge: string;
-      serverless: string;
-    }) => {
-      console.log(process.argv);
-      await bundle({
-        outputDir: options.outputDir,
-        clearOutputDir: options.clearOutputDir,
-        staticDir: options.staticDir,
-        edgeEntry: options.edge,
-        serverlessEntry: options.serverless,
-      });
-    }
-  );
-
-cli.help();
-
-cli.parse();
-
 console.log("Hello world!");
 
 async function bundle(opts: {
@@ -58,10 +26,10 @@ async function bundle(opts: {
     "/functions/index.func/.vc-config.json"
   );
   fs.ensureDirSync(path.dirname(funcPath));
-//   child.execSync(
-//     "pnpm ncc build ./dist/index.js -o " + path.dirname(funcPath),
-//     { stdio: "inherit", cwd }
-//   );
+  //   child.execSync(
+  //     "pnpm ncc build ./dist/index.js -o " + path.dirname(funcPath),
+  //     { stdio: "inherit", cwd }
+  //   );
   const { code, map, assets } = await ncc(path.join(cwd, "server/index.ts"), {
     cache: false,
     externals: [],
@@ -107,3 +75,42 @@ async function bundle(opts: {
     }
   });
 }
+
+export const build = () => {
+  console.log("Building...");
+
+  const cli = cac("vercel");
+
+  cli
+    .command("", "Bundle a HatTip app for Vercel")
+    .option("-o, --outputDir <path>", "Root directory of the app")
+    .option(
+      "-c, --clearOutputDir",
+      "Clear the output directory before bundling"
+    )
+    .option("-s, --staticDir <path>", "Static directory to copy to output")
+    .option("-e, --edge <path>", "Edge function entry file")
+    .option("-S, --serverless <path>", "Serverless function entry file")
+    .action(
+      async (options: {
+        outputDir: string;
+        clearOutputDir: boolean;
+        staticDir: string;
+        edge: string;
+        serverless: string;
+      }) => {
+        console.log(process.argv);
+        await bundle({
+          outputDir: options.outputDir,
+          clearOutputDir: options.clearOutputDir,
+          staticDir: options.staticDir,
+          edgeEntry: options.edge,
+          serverlessEntry: options.serverless,
+        });
+      }
+    );
+
+  cli.help();
+
+  cli.parse();
+};

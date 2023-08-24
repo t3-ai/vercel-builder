@@ -1,6 +1,6 @@
 {
   "name": "@t3-ai/vercel-builder",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "vercel builder",
   "keywords": [
     "t3-ai"
